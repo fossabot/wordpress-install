@@ -45,11 +45,11 @@ if [ "$DISTRO" == "Ubuntu" ]; then
   elif [ "$DISTRO" == "Arch" ]; then
     ## Later
   elif [ "$DISTRO" = 'Fedora' ]; then
-    ## Later
+    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
   elif [ "$DISTRO" == "CentOS" ]; then
-    ## Later
+    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
   elif [ "$DISTRO" == "Redhat" ]; then
-    ## Later
+    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
 fi
 }
 
@@ -58,7 +58,7 @@ install-essentials
 
 function install-wordpress() {
     ## Install Wordpress
-    if [ "$DISTRO" == "Ubuntu" ]; then
+  if [ "$DISTRO" == "Ubuntu" ]; then
     cd /var/www/html/
     rm index.html
     wget https://wordpress.org/latest.tar.gz
@@ -88,26 +88,47 @@ function install-wordpress() {
   elif [ "$DISTRO" == "Redhat" ]; then
     ## Later
 fi
-}
-  RANDOM_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32)
-
-  ## MySQL Setup
-  mysql -u root -p
-  CREATE DATABASE wordpress_db;
-  GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
-  FLUSH PRIVILEGES;
-  exit;
-
-  ## Install Begins Here
-  cd /var/www/html/
-  rm index.html
-  wget https://wordpress.org/latest.tar.gz
-  tar -xvzf latest.tar.gz
-  rm latest.tar.gz
-  mv wordpress/* .
-
   ## Give Correct Permissions
   chown -R www-data:www-data /var/www/html
+}
+
+## Run Install Wordpress
+install-wordpress
+
+  RANDOM_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32)"
+
+function mysql-wordpress() {
+  if [ "$DISTRO" == "Ubuntu" ]; then
+    mysql -u root -p
+    CREATE DATABASE wordpress_db;
+    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
+    FLUSH PRIVILEGES;
+    exit;
+  elif [ "$DISTRO" == "Debian" ]; then
+    mysql -u root -p
+    CREATE DATABASE wordpress_db;
+    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
+    FLUSH PRIVILEGES;
+    exit;
+  elif [ "$DISTRO" == "Raspbian" ]; then
+    mysql -u root -p
+    CREATE DATABASE wordpress_db;
+    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
+    FLUSH PRIVILEGES;
+    exit;
+  elif [ "$DISTRO" == "Arch" ]; then
+    ## Later
+  elif [ "$DISTRO" = 'Fedora' ]; then
+    ## Later
+  elif [ "$DISTRO" == "CentOS" ]; then
+    ## Later
+  elif [ "$DISTRO" == "Redhat" ]; then
+    ## Later
+fi
+}
+
+## Run Mysql Wordpress
+mysql-wordpress
   
 ## System Commands
 if pgrep systemd-journal; then
