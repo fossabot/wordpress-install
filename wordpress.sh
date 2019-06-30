@@ -1,6 +1,6 @@
 #!/bin/bash
-# Secure WireGuard For CentOS, Debian, Ubuntu, Raspbian, Arch, Fedora, Redhat
-# https://github.com/LiveChief/wireguard-install
+# Secure Wordpress For CentOS, Debian, Ubuntu, Raspbian, Arch, Fedora, Redhat
+# https://github.com/LiveChief/wordpress-install
 
 ## Sanity Checks and automagic
 function root-check() {
@@ -56,6 +56,39 @@ fi
 ## Running Install Essentials
 install-essentials
 
+function install-wordpress() {
+    ## Install Wordpress
+    if [ "$DISTRO" == "Ubuntu" ]; then
+    cd /var/www/html/
+    rm index.html
+    wget https://wordpress.org/latest.tar.gz
+    tar -xvzf latest.tar.gz
+    rm latest.tar.gz
+    mv wordpress/* .
+  elif [ "$DISTRO" == "Debian" ]; then
+    cd /var/www/html/
+    rm index.html
+    wget https://wordpress.org/latest.tar.gz
+    tar -xvzf latest.tar.gz
+    rm latest.tar.gz
+    mv wordpress/* .
+  elif [ "$DISTRO" == "Raspbian" ]; then
+    cd /var/www/html/
+    rm index.html
+    wget https://wordpress.org/latest.tar.gz
+    tar -xvzf latest.tar.gz
+    rm latest.tar.gz
+    mv wordpress/* .
+  elif [ "$DISTRO" == "Arch" ]; then
+    ## Later
+  elif [ "$DISTRO" = 'Fedora' ]; then
+    ## Later
+  elif [ "$DISTRO" == "CentOS" ]; then
+    ## Later
+  elif [ "$DISTRO" == "Redhat" ]; then
+    ## Later
+fi
+}
   RANDOM_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32)
 
   ## MySQL Setup
@@ -86,10 +119,10 @@ if pgrep systemd-journal; then
   systemctl enable mysql
   systemctl start mysql
   systemctl restart mysql
-  systemctl restart mysq
   ## Enable mod rewrite
   sudo a2enmod rewrite
 else
    service mysq restart
    service apache2 restart
+   sudo a2enmod rewrite
 fi
