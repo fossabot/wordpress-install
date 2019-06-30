@@ -1,1 +1,1 @@
-# wordpress-Auto-Install
+# wordpress-install
