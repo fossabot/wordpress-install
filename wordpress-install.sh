@@ -40,6 +40,7 @@ function install-essentials() {
   elif [ "$DISTRO" == "Raspbian" ]; then
     apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "CentOS" ]; then
+    yum install epel-release -y
     yum install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Fedora" ]; then
     dnf install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
