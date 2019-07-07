@@ -34,7 +34,7 @@ dist-check
 ## Start Installation Of Packages
 function install-essentials() {
   if [ "$DISTRO" == "Ubuntu" ]; then
-    apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+    apt-get install apache2 mysql-server php7.2 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Debian" ]; then
     apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Raspbian" ]; then
