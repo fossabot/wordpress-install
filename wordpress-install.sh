@@ -53,34 +53,6 @@ function install-essentials() {
 ## Install Essentials
 install-essentials
 
-## Install Google TCP BBR
-function install-bbr() {
-  if [ "$DISTRO" == "Ubuntu" ]; then
-    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
-    sudo dpkg -i mod-pagespeed-*.deb
-    sudo apt-get -f install
-  elif [ "$DISTRO" == "Debian" ]; then
-    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
-    sudo dpkg -i mod-pagespeed-*.deb
-    sudo apt-get -f install
-  elif [ "$DISTRO" == "Rasbian" ]; then
-    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
-    sudo dpkg -i mod-pagespeed-*.deb
-    sudo apt-get -f install
-  elif [ "$DISTRO" == "CentOS" ]; then
-    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
-    sudo dpkg -i mod-pagespeed-*.deb
-    sudo apt-get -f install
-  elif [ "$DISTRO" == "Fedora" ]; then
-    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
-    sudo dpkg -i mod-pagespeed-*.deb
-    sudo apt-get -f install
-  fi
-}
-
-## Install Google BBR
-install-bbr
-
 ## Start Installation Of Wordpress
 function install-wordpress() {
     rm /var/www/html/index.html
