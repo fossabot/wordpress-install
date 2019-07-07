@@ -1,19 +1,16 @@
 #!/bin/bash
-# Secure Wordpress For CentOS, Debian, Ubuntu, Raspbian, Arch, Fedora, Redhat
-# https://github.com/LiveChief/wordpress-install
 
 ## Sanity Checks and automagic
 function root-check() {
-  if [[ "$EUID" -ne 0 ]]; then
-    echo "Hello there non ROOT user, you need to run this as ROOT."
-    exit
-  fi
+if [[ "$EUID" -ne 0 ]]; then
+  echo "Sorry, you need to run this as root"
+  exit
+fi
 }
 
- ## Root Check
+## Root Check
 root-check
 
-## Detect OS
 function dist-check() {
   if [ -e /etc/centos-release ]; then
     DISTRO="CentOS"
@@ -34,116 +31,146 @@ function dist-check() {
 ## Check distro
 dist-check
 
+## Start Installation Of Packages
 function install-essentials() {
-  ## Installation begins here.
-if [ "$DISTRO" == "Ubuntu" ]; then
-    apt-get install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
+  if [ "$DISTRO" == "Ubuntu" ]; then
+    apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Debian" ]; then
-    apt-get install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
+    apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Raspbian" ]; then
-    apt-get install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
-  elif [ "$DISTRO" == "Arch" ]; then
-    ## Later
-  elif [ "$DISTRO" = 'Fedora' ]; then
-    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
+    apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "CentOS" ]; then
-    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
+    yum install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+  elif [ "$DISTRO" == "Fedora" ]; then
+    dnf install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
   elif [ "$DISTRO" == "Redhat" ]; then
-    yum install apache2 mysql-server mysql-server php7.0 php7.0-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip libapache2-mod-php7.0 php7.0-mcrypt -y
-fi
+    dnf install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+  elif [ "$DISTRO" == "Arch" ]; then
+    pacman -s
+  fi
 }
 
-## Running Install Essentials
+## Install Essentials
 install-essentials
 
-function install-wordpress() {
-    ## Install Wordpress
+## Install Google TCP BBR
+function install-bbr() {
   if [ "$DISTRO" == "Ubuntu" ]; then
-    cd /var/www/html/
-    rm index.html
-    wget https://wordpress.org/latest.tar.gz
-    tar -xvzf latest.tar.gz
-    rm latest.tar.gz
-    mv wordpress/* .
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    sudo dpkg -i mod-pagespeed-*.deb
+    sudo apt-get -f install
   elif [ "$DISTRO" == "Debian" ]; then
-    cd /var/www/html/
-    rm index.html
-    wget https://wordpress.org/latest.tar.gz
-    tar -xvzf latest.tar.gz
-    rm latest.tar.gz
-    mv wordpress/* .
-  elif [ "$DISTRO" == "Raspbian" ]; then
-    cd /var/www/html/
-    rm index.html
-    wget https://wordpress.org/latest.tar.gz
-    tar -xvzf latest.tar.gz
-    rm latest.tar.gz
-    mv wordpress/* .
-  elif [ "$DISTRO" == "Arch" ]; then
-    ## Later
-  elif [ "$DISTRO" = 'Fedora' ]; then
-    ## Later
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    sudo dpkg -i mod-pagespeed-*.deb
+    sudo apt-get -f install
+  elif [ "$DISTRO" == "Rasbian" ]; then
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    sudo dpkg -i mod-pagespeed-*.deb
+    sudo apt-get -f install
   elif [ "$DISTRO" == "CentOS" ]; then
-    ## Later
-  elif [ "$DISTRO" == "Redhat" ]; then
-    ## Later
-fi
-  ## Give Correct Permissions
-  chown -R www-data:www-data /var/www/html
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+    sudo dpkg -i mod-pagespeed-*.deb
+    sudo apt-get -f install
+  elif [ "$DISTRO" == "Fedora" ]; then
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+    sudo dpkg -i mod-pagespeed-*.deb
+    sudo apt-get -f install
+  fi
 }
 
-## Run Install Wordpress
+## Install Google BBR
+install-bbr
+
+## Start Installation Of Wordpress
+function install-wordpress() {
+    rm /var/www/html/index.html
+    cd /tmp
+    wget https://wordpress.org/latest.tar.gz
+    tar xf latest.tar.gz
+    sudo mv /tmp/wordpress/* /var/www/html
+}
+
+## Install Wordpresss
 install-wordpress
 
-  RANDOM_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32)"
+## Enable Mod Rewrite
+function mod-rewrite() {
+sudo a2enmod rewrite
+echo "<Directory /var/www>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Require all granted
+</Directory>" >> /etc/apache2/sites-available/000-default.conf
+}
 
-function mysql-wordpress() {
-  if [ "$DISTRO" == "Ubuntu" ]; then
-    mysql -u root -p
-    CREATE DATABASE wordpress_db;
-    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
-    FLUSH PRIVILEGES;
-    exit;
-  elif [ "$DISTRO" == "Debian" ]; then
-    mysql -u root -p
-    CREATE DATABASE wordpress_db;
-    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
-    FLUSH PRIVILEGES;
-    exit;
-  elif [ "$DISTRO" == "Raspbian" ]; then
-    mysql -u root -p
-    CREATE DATABASE wordpress_db;
-    GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'localhost' IDENTIFIED BY '$RANDOM_PASSWORD';
-    FLUSH PRIVILEGES;
-    exit;
-  elif [ "$DISTRO" == "Arch" ]; then
-    ## Later
-  elif [ "$DISTRO" = 'Fedora' ]; then
-    ## Later
-  elif [ "$DISTRO" == "CentOS" ]; then
-    ## Later
-  elif [ "$DISTRO" == "Redhat" ]; then
-    ## Later
+## Run Mode Rewite
+mod-rewrite
+
+## Enable htacess
+function enable-htacess() {
+echo "<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>" >> /var/www/.htaccess
+}
+
+## Run Htacess
+enable-htacess
+
+## Function for correct permission
+function correct-permissions() {
+cd /var/www/
+chown www-data:www-data  -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+}
+
+## Run correct permissions 
+correct-permissions
+
+## Restart Apache2
+function apache-restart() {
+if pgrep systemd-journal; then
+  systemctl enable apache2
+  systemctl restart apache2
+else
+   service apache2 restart
 fi
 }
 
-## Run Mysql Wordpress
-mysql-wordpress
-  
-## System Commands
-if pgrep systemd-journal; then
-  ### Apache2
-  systemctl enable apache2
-  systemctl start apache2
-  systemctl restart apache2
-  ### MySQL
-  systemctl enable mysql
-  systemctl start mysql
-  systemctl restart mysql
-  ## Enable mod rewrite
-  sudo a2enmod rewrite
-else
-   service mysq restart
-   service apache2 restart
-   sudo a2enmod rewrite
-fi
+## Run Apache2 Restart
+apache-restart
+
+function mysql-setup() {
+echo "RUN THESE COMMANDS"
+echo "------------------------------------------------------------------------------------------"
+echo "mysql_secure_installation"
+echo "mysql -u root -p"
+echo "CREATE DATABASE wordpress_database"
+echo "CREATE USER `wordpress_database_admin`@`localhost` IDENTIFIED BY '$RANDOM_PASSWORD';"
+echo "GRANT ALL ON wordpress_database.* TO `wordpress_database_admin`@`localhost`;"
+echo "FLUSH PRIVILEGES;"
+echo "exit"
+echo "------------------------------------------------------------------------------------------"
+}
+
+# Run SQL Setup
+mysql-setup
+
+## Wordpress Replace Config
+function wordpress-config() {
+echo "RUN THESE COMMANDS"
+echo "------------------------------------------------------------------------------------------"
+echo "mv var/www/html/wp-config-sample.php var/www/html/wp-config.php"
+echo "sed -i 's|database_name_here|wordpress_database|'var/www/html/wp-config.php"
+echo "sed -i 's|username_here|wordpress_database_admin|'var/www/html/wp-config.php"
+echo "sed -i 's|password_here|$RANDOM_PASSWORD|'var/www/html/wp-config.php"
+echo "------------------------------------------------------------------------------------------"
+}
+
+## Wordpress Config Function Running 
+wordpress-config
