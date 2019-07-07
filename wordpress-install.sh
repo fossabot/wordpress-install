@@ -81,14 +81,16 @@ mod-rewrite
 
 ## Enable htacess
 function enable-htacess() {
-echo "<IfModule mod_rewrite.c>
+echo "
+<IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
-</IfModule>" >> /var/www/.htaccess
+</IfModule>
+" >> /var/www/.htaccess
 }
 
 ## Run Htacess
