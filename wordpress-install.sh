@@ -16,8 +16,6 @@ function dist-check() {
     DISTRO="CentOS"
   elif [ -e /etc/debian_version ]; then
     DISTRO=$( lsb_release -is )
-  elif [ -e /etc/arch-release ]; then
-    DISTRO="Arch"
   elif [ -e /etc/fedora-release ]; then
     DISTRO="Fedora"
   elif [ -e /etc/redhat-release ]; then
@@ -35,6 +33,9 @@ dist-check
 function install-essentials() {
   if [ "$DISTRO" == "Ubuntu" ]; then
     apt-get install apache2 mysql-server php7.2 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    dpkg -i mod-pagespeed-*.deb
+    apt-get -f install
   elif [ "$DISTRO" == "Debian" ]; then
     apt-get install apache2 php7.3 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
     wget http://repo.mysql.com/mysql-apt-config_0.8.13-1_all.deb
@@ -42,17 +43,30 @@ function install-essentials() {
     rm mysql-apt-config_0.8.13-1_all.deb 
     apt-get update
     apt-get install mysql-server -y
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    dpkg -i mod-pagespeed-*.deb
+    apt-get -f install
   elif [ "$DISTRO" == "Raspbian" ]; then
     apt-get install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+    dpkg -i mod-pagespeed-*.deb
+    apt-get -f install
   elif [ "$DISTRO" == "CentOS" ]; then
     yum install epel-release -y
     yum install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+    sudo yum install at 
+    sudo rpm -U mod-pagespeed-*.rpm
   elif [ "$DISTRO" == "Fedora" ]; then
     dnf install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+    sudo yum install at 
+    sudo rpm -U mod-pagespeed-*.rpm
   elif [ "$DISTRO" == "Redhat" ]; then
     dnf install apache2 mysql-server php7.0 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick -y
-  elif [ "$DISTRO" == "Arch" ]; then
-    pacman -s
+    wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+    sudo yum install at 
+    sudo rpm -U mod-pagespeed-*.rpm
   fi
 }
 
