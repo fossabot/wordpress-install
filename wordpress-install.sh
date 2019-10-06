@@ -146,6 +146,7 @@ echo "mysql_secure_installation"
 echo "mysql -u root -p"
 echo "CREATE DATABASE {WORDPRESS_DATABASE_NAME};"
 echo "CREATE USER `{WORDPRESS_DATABASE_USER}`@`localhost` IDENTIFIED BY '{WORDPRESS_DATABASE_PASSWORD}';"
+echo "ALTER USER `{WORDPRESS_DATABASE_NAME}`@`localhost` IDENTIFIED WITH mysql_native_password BY '{WORDPRESS_DATABASE_PASSWORD}';"
 echo "GRANT ALL ON {WORDPRESS_DATABASE_NAME}.* TO `{WORDPRESS_DATABASE_USER}`@`localhost`;"
 echo "FLUSH PRIVILEGES;"
 echo "exit"
@@ -154,17 +155,3 @@ echo "--------------------------------------------------------------------------
 
 # Run SQL Setup
 mysql-setup
-
-## Wordpress Replace Config
-function wordpress-config() {
-echo "RUN THESE COMMANDS"
-echo "------------------------------------------------------------------------------------------"
-echo "mv var/www/html/wp-config-sample.php var/www/html/wp-config.php"
-echo "sed -i 's|database_name_here|{WORDPRESS_DATABASE_NAME}|'var/www/html/wp-config.php"
-echo "sed -i 's|username_here|{WORDPRESS_DATABASE_USER}|'var/www/html/wp-config.php"
-echo "sed -i 's|password_here|{WORDPRESS_DATABASE_PASSWORD}|'var/www/html/wp-config.php"
-echo "------------------------------------------------------------------------------------------"
-}
-
-## Wordpress Config Function Running 
-wordpress-config
