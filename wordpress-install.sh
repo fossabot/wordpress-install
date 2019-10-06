@@ -68,6 +68,7 @@ function install-essentials() {
     sudo yum install at 
     sudo rpm -U mod-pagespeed-*.rpm
   fi
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 }
 
 ## Install Essentials
