@@ -102,6 +102,7 @@ mod-rewrite
 ## Enable htacess
 function enable-htacess() {
 echo "
+# Enable Rewrite
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -110,6 +111,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
+# Disable Indexing
+Options -Indexes
 " >> /var/www/.htaccess
 }
 
