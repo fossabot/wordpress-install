@@ -42,7 +42,6 @@ function install-essentials() {
     dpkg -i mysql-apt-config_0.8.13-1_all.deb
     rm mysql-apt-config_0.8.13-1_all.deb 
     apt-get update
-    apt-get install mysql-server -y
     wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
     dpkg -i mod-pagespeed-*.deb
     apt-get -f install
