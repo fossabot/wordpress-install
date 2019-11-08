@@ -42,6 +42,7 @@ function install-essentials() {
     dpkg -i mysql-apt-config_0.8.13-1_all.deb
     rm mysql-apt-config_0.8.13-1_all.deb 
     apt-get update
+    apt-get install mysql-server -y
     wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
     dpkg -i mod-pagespeed-*.deb
     apt-get -f install
@@ -100,8 +101,8 @@ mod-rewrite
 
 ## Enable htacess
 function enable-htacess() {
-echo "
-# Enable Rewrite
+echo \
+"# Enable Rewrite
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -111,8 +112,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
 # Disable Indexing
-Options -Indexes
-" >> /var/www/.htaccess
+Options -Indexes" \
+ >> /var/www/.htaccess
 }
 
 ## Run Htacess
