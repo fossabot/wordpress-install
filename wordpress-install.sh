@@ -112,7 +112,12 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
 # Disable Indexing
-Options -Indexes" \
+Options -Indexes
+# Change Upload Limit
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_time 300" \
  >> /var/www/.htaccess
 }
 
