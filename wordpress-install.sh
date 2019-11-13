@@ -37,7 +37,7 @@ function install-essentials() {
     dpkg -i mod-pagespeed-*.deb
     apt-get -f install
   elif [ "$DISTRO" == "Debian" ]; then
-    apt-get install apache2 php7.3 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick php-soap php-fpm php-zip-y
+    apt-get install apache2 php7.3 php-curl php-gd php-mbstring php-xml php-xmlrpc php-mysql php-bcmath php-imagick php-soap php-fpm php-zip php-json -y
     wget http://repo.mysql.com/mysql-apt-config_0.8.13-1_all.deb
     dpkg -i mysql-apt-config_0.8.13-1_all.deb
     rm mysql-apt-config_0.8.13-1_all.deb 
